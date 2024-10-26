@@ -27,7 +27,11 @@ public class Vehicle {
     }
 
     public void setVin(int vin) {
-        this.vin = vin;
+        if (vin > 0) {
+            this.vin = vin;
+        } else {
+            throw new IllegalArgumentException("VIN must be positive!");
+        }
     }
 
     public int getYear() {
@@ -43,7 +47,11 @@ public class Vehicle {
     }
 
     public void setMake(String make) {
-        this.make = make;
+        if (make != null && !make.trim().isEmpty()) { // The trim() ensures that the make is not just whitespace
+            this.make = make;
+        } else {
+            throw new IllegalArgumentException("Make cannot be null or empty!");
+        }
     }
 
     public String getModel() {
@@ -51,7 +59,11 @@ public class Vehicle {
     }
 
     public void setModel(String model) {
-        this.model = model;
+        if (model != null && !model.trim().isEmpty()) {
+            this.model = model;
+        } else {
+            throw new IllegalArgumentException("Model cannot be null or empty!");
+        }
     }
 
     public String getVehicleType() {
@@ -59,7 +71,17 @@ public class Vehicle {
     }
 
     public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+        if (vehicleType != null && !vehicleType.trim().isEmpty()) { 
+            String type = vehicleType.trim().toLowerCase();
+            switch (type) {          // Ensures that the vehicleType is can only be "car", "truck", "SUV", or "van".
+                case "car", "truck", "suv", "van":
+                    this.vehicleType = type; break;
+                default:
+                    throw new IllegalArgumentException("Vehicle type must be 'car', 'truck', 'SUV', or 'van'!"); // Throws an error if its is not.
+            }
+        } else {
+            throw new IllegalArgumentException("Vehicle type cannot be null or empty!");
+        }
     }
 
     public String getColor() {
@@ -67,7 +89,11 @@ public class Vehicle {
     }
 
     public void setColor(String color) {
-        this.color = color;
+        if (color != null && !color.trim().isEmpty()) {
+            this.color = color;
+        } else {
+            throw new IllegalArgumentException("Color cannot be null or empty!");
+        }
     }
 
     public int getOdometer() {
@@ -75,7 +101,11 @@ public class Vehicle {
     }
 
     public void setOdometer(int odometer) {
-        this.odometer = odometer;
+        if (odometer >= 0) {
+            this.odometer = odometer;
+        } else {
+            throw new IllegalArgumentException("Odometer cannot be negative!");
+        }
     }
 
     public double getPrice() {
@@ -83,6 +113,10 @@ public class Vehicle {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        if (price >= 0) {
+            this.price = price;
+        } else {
+            throw new IllegalArgumentException("Price cannot be negative!");
+        }
     }
 }
