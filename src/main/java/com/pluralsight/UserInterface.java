@@ -2,6 +2,8 @@ package com.pluralsight;
 
 import com.pluralsight.utils.Console;
 
+import java.util.ArrayList;
+
 public class UserInterface {
     private Dealership dealership;
 
@@ -12,7 +14,20 @@ public class UserInterface {
     private void initializeDealership() { // This is the init() method mentioned in workbook 4. i just gave it a better name.
         dealership = new DealershipFileManager().getDealership();
     }
+    
+    private void displayVehicles(ArrayList<Vehicle> vehicles) {
+        if (vehicles.isEmpty()) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+        System.out.printf("%-10s %-4s %-10s %-10s %-10s %-10s %-10s %-10s\n", "VIN", "Year", "Make", "Model", "Type", "Color", "Mileage", "Price");
+        for (Vehicle vehicle : vehicles) {
+            System.out.println(vehicle.toString());
+        }
+    }
 
+
+    
     public void display() {
         initializeDealership(); // Loads the dealership from the file.
         String options = """
@@ -78,7 +93,7 @@ public class UserInterface {
     }
 
     public void processGetAllVehiclesRequest() {
-        // Method implementation
+        displayVehicles(dealership.getAllVehicles());
     }
 
     public void processAddVehicleRequest() {
