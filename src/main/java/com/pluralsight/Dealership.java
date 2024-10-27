@@ -38,5 +38,18 @@ public class Dealership {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+
+    public String getAddress() {
+        return address;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 }
 
