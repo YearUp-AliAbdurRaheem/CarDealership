@@ -367,29 +367,29 @@ public class UserInterface {
 
         Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
         dealership.addVehicle(newVehicle);
+        new DealershipFileManager().saveDealership(dealership); // Save the updated dealership to its file
         System.out.println("Added " + vehicleType + " with VIN " + vin + "!\n");
     }
 
     public void processRemoveVehicleRequest() {
         int vin = 0;
         
-        do {
+        while (true) {
             String input = Console.PromptForString("Enter VIN of the vehicle to remove (or 'q' to cancel): ");
             if (input.equalsIgnoreCase("q")) return;
             try {
                 vin = Integer.parseInt(input);
-                break;
+                Vehicle vehicleToRemove = dealership.getVehicleByVin(vin);
+                if (vehicleToRemove != null) {
+                    dealership.removeVehicle(vehicleToRemove);
+                    System.out.println("Removed " + vehicleToRemove.getVehicleType() + " with VIN " + vin + "!\n");
+                    break;
+                } else {
+                    System.out.println("Vehicle not found. Please try again.");
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number for VIN.");
             }
-        } while (vin <= 0);
-
-        Vehicle vehicleToRemove = dealership.getVehicleByVin(vin);
-        if (vehicleToRemove != null) {
-            dealership.removeVehicle(vehicleToRemove);
-            System.out.println("Removed " + vehicleToRemove.getVehicleType() + " with VIN " + vin + "!\n");
-        } else {
-            System.out.println("Vehicle not found.");
         }
     }
 
