@@ -1,4 +1,5 @@
 package com.pluralsight;
+import com.pluralsight.utils.ColorCodes;
 
 public class Vehicle {
     private int vin;
@@ -122,6 +123,26 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return String.format("%-10d %-4d %-10s %-10s %-10s %-10s %-10d %-10.2f", vin, year, make, model, vehicleType, color, odometer, price);
+        String colorString;
+        switch (color.toLowerCase()) {
+            case "red":
+                colorString = ColorCodes.RED + color + ColorCodes.RESET; break;
+            case "white":
+                colorString = ColorCodes.WHITE + color + ColorCodes.RESET; break;
+            case "blue":
+                colorString = ColorCodes.BLUE + color + ColorCodes.RESET; break;
+            case "black":
+                colorString = ColorCodes.BLACK + color + ColorCodes.RESET; break;
+            case "green":
+                colorString = ColorCodes.GREEN + color + ColorCodes.RESET; break;
+            case "gray":
+                colorString = ColorCodes.GRAY + color + ColorCodes.RESET; break;
+            case "silver":
+                colorString = ColorCodes.SILVER + color + ColorCodes.RESET; break;
+            default:
+                colorString = color; break;
+        }
+        return String.format("%-10d %-4d %-10s %-10s %-10s %-20s %-10d %-10.2f", 
+                             vin, year, make, model, vehicleType, colorString, odometer, price);
     }
 }

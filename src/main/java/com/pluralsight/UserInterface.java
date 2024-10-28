@@ -21,7 +21,7 @@ public class UserInterface {
             System.out.println("No vehicles found.");
             return;
         }
-        System.out.printf("%-10s %-4s %-10s %-10s %-10s %-10s %-10s %-10s%n", "VIN", "Year", "Make", "Model", "Type", "Color", "Mileage", "Price");
+        System.out.printf("%-10s %-4s %-10s %-10s %-10s %-10s %-12s %-10s%n", "VIN", "Year", "Make", "Model", "Type", "Color", "Mileage", "Price");
         for (Vehicle vehicle : vehicles) {
             System.out.println(vehicle.toString());
         }
@@ -66,7 +66,7 @@ public class UserInterface {
                 case 99 -> System.exit(0);
                 default -> System.out.println("Invalid selection. Please try again.");
             }
-        } while (selection != 99);
+        } while (true);
     }
 
     public void processGetByPriceRequest() {
