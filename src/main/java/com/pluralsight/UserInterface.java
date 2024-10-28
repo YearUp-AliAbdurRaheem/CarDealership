@@ -66,7 +66,7 @@ public class UserInterface {
                 case 99 -> System.exit(0);
                 default -> System.out.println("Invalid selection. Please try again.");
             }
-        } while (true);
+        } while (selection != 99);
     }
 
     public void processGetByPriceRequest() {
