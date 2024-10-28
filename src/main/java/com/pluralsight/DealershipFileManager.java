@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DealershipFileManager {
     private static final String FILE_NAME = "dealership.csv";
@@ -51,14 +50,14 @@ public class DealershipFileManager {
     public void saveDealership(Dealership dealership) {
         try (FileWriter fileWriter = new FileWriter(FILE_NAME)) {
             // Write dealership info first (header)
-            fileWriter.write(String.format("%s|%s|%s\n", 
+            fileWriter.write(String.format("%s|%s|%s%n",
                 dealership.getName(),
                 dealership.getAddress(), 
                 dealership.getPhoneNumber()));
             
             // Write all vehicles to the file
             for (Vehicle vehicle : dealership.getAllVehicles()) {
-                fileWriter.write(String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n",
+                fileWriter.write(String.format("%d|%d|%s|%s|%s|%s|%d|%.2f%n",
                     vehicle.getVin(),
                     vehicle.getYear(),
                     vehicle.getMake(),

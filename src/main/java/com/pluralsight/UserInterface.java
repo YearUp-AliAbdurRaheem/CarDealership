@@ -263,11 +263,11 @@ public class UserInterface {
         String vehicleType;
 
         do {
-            vehicleType = Console.PromptForString("Enter vehicle type (or 'q' to cancel): ");
+            vehicleType = Console.PromptForString("Enter vehicle type (car, truck, SUV, van) (or 'q' to cancel): ");
             if (vehicleType.equals("q")) {
                 return;
             }
-        } while (vehicleType.isEmpty());
+        } while (vehicleType.isEmpty() || !isValidVehicleType(vehicleType));
 
         displayVehicles(dealership.getVehiclesByType(vehicleType));
     }
