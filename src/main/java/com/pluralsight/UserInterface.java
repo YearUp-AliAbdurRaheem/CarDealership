@@ -3,6 +3,7 @@ package com.pluralsight;
 import com.pluralsight.utils.Console;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserInterface {
     private Dealership dealership;
@@ -24,6 +25,7 @@ public class UserInterface {
         for (Vehicle vehicle : vehicles) {
             System.out.println(vehicle.toString());
         }
+        System.out.println();
     }
 
 
@@ -43,53 +45,231 @@ public class UserInterface {
                 9 - Remove a vehicle
                 99 - Quit
 
-                >>>\s
-                """;
-        String selection;
+                >>>\s""";
+
+        int selection;
 
         // User Interface Loop
         do {
             System.out.println("Welcome to " + dealership.getName() + "!");
-            selection = Console.PromptForString(options); // Getting string instead of int because we can check if its empty
-        } while (selection.isEmpty());
-
-        switch (Integer.parseInt(selection)) {
-            case 1 -> processGetByPriceRequest();
-            case 2 -> processGetByMakeModelRequest();
-            case 3 -> processGetByYearRequest();
-            case 4 -> processGetByColorRequest();
-            case 5 -> processGetByMileageRequest();
-            case 6 -> processGetByVehicleTypeRequest();
-            case 7 -> processGetAllVehiclesRequest();
-            case 8 -> processAddVehicleRequest();
-            case 9 -> processRemoveVehicleRequest();
-            case 99 -> System.exit(0);
-            default -> System.out.println("Invalid selection. Please try again.");
-        };
+            selection = Console.PromptForInt(options);
+            switch (selection) {
+                case 1 -> processGetByPriceRequest();
+                case 2 -> processGetByMakeModelRequest();
+                case 3 -> processGetByYearRequest();
+                case 4 -> processGetByColorRequest();
+                case 5 -> processGetByMileageRequest();
+                case 6 -> processGetByVehicleTypeRequest();
+                case 7 -> processGetAllVehiclesRequest();
+                case 8 -> processAddVehicleRequest();
+                case 9 -> processRemoveVehicleRequest();
+                case 99 -> System.exit(0);
+                default -> System.out.println("Invalid selection. Please try again.");
+            }
+        } while (selection != 99);
     }
 
     public void processGetByPriceRequest() {
-        // Method implementation
+        String input = "";
+        double minPrice = 0, maxPrice = 0;
+
+        do {
+            input = Console.PromptForString("Enter minimum price (or 'q' to cancel): ");
+            if (input.equals("q")) {
+                return;
+            }
+            try {
+                minPrice = Double.parseDouble(input);
+                // Price Validation
+                if (minPrice < 0) {
+                    System.out.println("Price cannot be negative. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                input = ""; // Reset input
+            }
+        } while (input.isEmpty());
+
+        do {
+            input = Console.PromptForString("Enter maximum price (or 'q' to cancel): ");
+            if (input.equals("q")) {
+                return;
+            }
+            try {
+                maxPrice = Double.parseDouble(input);
+                // Price Validation
+                if (maxPrice < minPrice) {
+                    System.out.println("Maximum price cannot be less than minimum price. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                input = ""; // Reset input
+            }
+        } while (input.isEmpty());
+
+        displayVehicles(dealership.getVehiclesByPrice(minPrice, maxPrice));
     }
 
     public void processGetByMakeModelRequest() {
-        // Method implementation
+        String make, model;
+
+        do {
+            make = Console.PromptForString("Enter make (or 'q' to cancel): ");
+            if (make.equals("q")) {
+                return;
+            }
+        } while (make.isEmpty());
+
+        do {
+            model = Console.PromptForString("Enter model (or 'q' to cancel): ");
+            if (model.equals("q")) {
+                return;
+            }
+        } while (model.isEmpty());
+
+        displayVehicles(dealership.getVehiclesByMakeModel(make, model));
     }
 
     public void processGetByYearRequest() {
-        // Method implementation
+        String input = "";
+        int minYear = 0, maxYear = 0;
+
+        do {
+            input = Console.PromptForString("Enter minimum year (or 'q' to cancel): ");
+            if (input.equals("q")) {
+                return;
+            }
+            try {
+                minYear = Integer.parseInt(input);
+                // Year Validation
+                if (minYear < 0) {
+                    System.out.println("Year cannot be negative. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid year.");
+                input = ""; // Reset input
+            }
+        } while (input.isEmpty());
+
+        do {
+            input = Console.PromptForString("Enter maximum year (or 'q' to cancel): ");
+            if (input.equals("q")) {
+                return;
+            }
+            try {
+                maxYear = Integer.parseInt(input);
+                // Year Validation
+                if (maxYear < 0) {
+                    System.out.println("Year cannot be negative. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                if (maxYear < minYear) {
+                    System.out.println("Maximum year cannot be less than minimum year. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid year.");
+                input = ""; // Reset input
+            }
+        } while (input.isEmpty());
+
+        displayVehicles(dealership.getVehiclesByYear(minYear, maxYear));
     }
 
     public void processGetByColorRequest() {
-        // Method implementation
+        String color;
+
+        do {
+            color = Console.PromptForString("Enter make (or 'q' to cancel): ");
+            if (color.equals("q")) {
+                return;
+            }
+        } while (color.isEmpty());
+
+        displayVehicles(dealership.getVehiclesByColor(color));
     }
 
     public void processGetByMileageRequest() {
-        // Method implementation
+        String input = "";
+        int minMileage = 0, maxMileage = 0;
+
+        do {
+            input = Console.PromptForString("Enter minimum mileage (or 'q' to cancel): ");
+            if (input.equals("q")) {
+                return;
+            }
+            try {
+                minMileage = Integer.parseInt(input);
+                // mileage Validation
+                if (minMileage < 0) {
+                    System.out.println("Mileage cannot be negative. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid mileage.");
+                input = ""; // Reset input
+            }
+        } while (input.isEmpty());
+
+        do {
+            input = Console.PromptForString("Enter maximum mileage (or 'q' to cancel): ");
+            if (input.equals("q")) {
+                return;
+            }
+            try {
+                maxMileage = Integer.parseInt(input);
+                // mileage Validation
+                if (maxMileage < 0) {
+                    System.out.println("Mileage cannot be negative. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                if (maxMileage < minMileage) {
+                    System.out.println("Maximum mileage cannot be less than minimum mileage. Please try again.");
+                    input = ""; // Reset input
+                    continue;
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid mileage.");
+                input = ""; // Reset input
+            }
+        } while (input.isEmpty());
+
+        displayVehicles(dealership.getVehiclesByMileage(minMileage, maxMileage));
     }
 
     public void processGetByVehicleTypeRequest() {
-        // Method implementation
+        String vehicleType;
+
+        do {
+            vehicleType = Console.PromptForString("Enter vehicle type (or 'q' to cancel): ");
+            if (vehicleType.equals("q")) {
+                return;
+            }
+        } while (vehicleType.isEmpty());
+
+        displayVehicles(dealership.getVehiclesByType(vehicleType));
     }
 
     public void processGetAllVehiclesRequest() {
@@ -97,10 +277,126 @@ public class UserInterface {
     }
 
     public void processAddVehicleRequest() {
-        // Method implementation
+        int vin;
+        do {
+            String vinInput = Console.PromptForString("Enter VIN of the vehicle (or 'q' to cancel): ");
+            if (vinInput.equalsIgnoreCase("q")) return;
+            try {
+                vin = Integer.parseInt(vinInput);
+                if (vin <= 0) {
+                    System.out.println("VIN must be a positive number.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number for VIN.");
+            }
+        } while (true);
+
+        String make;
+        do {
+            make = Console.PromptForString("Enter make of the vehicle (or 'q' to cancel): ");
+            if (make.equalsIgnoreCase("q")) return;
+        } while (make.isEmpty());
+
+        String model;
+        do {
+            model = Console.PromptForString("Enter model of the vehicle (or 'q' to cancel): ");
+            if (model.equalsIgnoreCase("q")) return;
+        } while (model.isEmpty());
+
+        int year;
+        do {
+            String yearInput = Console.PromptForString("Enter year of the vehicle (or 'q' to cancel): ");
+            if (yearInput.equalsIgnoreCase("q")) return;
+            try {
+                year = Integer.parseInt(yearInput);
+                if (year <= 0) {
+                    System.out.println("Year must be positive.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid year.");
+            }
+        } while (true);
+
+        String color;
+        do {
+            color = Console.PromptForString("Enter color of the vehicle (or 'q' to cancel): ");
+            if (color.equalsIgnoreCase("q")) return;
+        } while (color.isEmpty());
+
+        double price;
+        do {
+            String priceInput = Console.PromptForString("Enter price of the vehicle (or 'q' to cancel): ");
+            if (priceInput.equalsIgnoreCase("q")) return;
+            try {
+                price = Double.parseDouble(priceInput);
+                if (price < 0) {
+                    System.out.println("Price cannot be negative.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid price.");
+            }
+        } while (true);
+
+        int odometer;
+        do {
+            String odometerInput = Console.PromptForString("Enter odometer reading (or 'q' to cancel): ");
+            if (odometerInput.equalsIgnoreCase("q")) return;
+            try {
+                odometer = Integer.parseInt(odometerInput);
+                if (odometer < 0) {
+                    System.out.println("Odometer cannot be negative.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        } while (true);
+
+        String vehicleType;
+        do {
+            vehicleType = Console.PromptForString("Enter vehicle type (car, truck, SUV, van) (or 'q' to cancel): ");
+            if (vehicleType.equalsIgnoreCase("q")) return;
+        } while (vehicleType.isEmpty() || !isValidVehicleType(vehicleType));
+
+        Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+        dealership.addVehicle(newVehicle);
+        System.out.println("Added " + vehicleType + " with VIN " + vin + "!\n");
     }
 
     public void processRemoveVehicleRequest() {
-        // Method implementation
+        int vin = 0;
+        
+        do {
+            String input = Console.PromptForString("Enter VIN of the vehicle to remove (or 'q' to cancel): ");
+            if (input.equalsIgnoreCase("q")) return;
+            try {
+                vin = Integer.parseInt(input);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number for VIN.");
+            }
+        } while (vin <= 0);
+
+        Vehicle vehicleToRemove = dealership.getVehicleByVin(vin);
+        if (vehicleToRemove != null) {
+            dealership.removeVehicle(vehicleToRemove);
+            System.out.println("Removed " + vehicleToRemove.getVehicleType() + " with VIN " + vin + "!\n");
+        } else {
+            System.out.println("Vehicle not found.");
+        }
+    }
+
+    private static final String[] VALID_VEHICLE_TYPES = {"car", "truck", "suv", "van"}; // Helper section to validate vehicle types
+
+    private boolean isValidVehicleType(String vehicleType) {
+        return Arrays.stream(VALID_VEHICLE_TYPES)
+                     .anyMatch(type -> type.equalsIgnoreCase(vehicleType)); // New type of stream :D
     }
 }
