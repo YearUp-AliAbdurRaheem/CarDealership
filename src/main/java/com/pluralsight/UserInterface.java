@@ -35,7 +35,7 @@ public class UserInterface {
         String options = """
                 Please select from the following choices:
                 1 - Find vehicles within a price range
-                2 - Find vehicles by make / model
+                2 - Find vehicles by make & model
                 3 - Find vehicles by year range
                 4 - Find vehicles by color
                 5 - Find vehicles by mileage range
